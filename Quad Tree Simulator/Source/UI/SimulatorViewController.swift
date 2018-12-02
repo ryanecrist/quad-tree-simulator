@@ -26,6 +26,8 @@ class SimulatorViewController: UIViewController {
         simulatorView.quadTreeView.addGestureRecognizer(tapGestureRecognizer)
         
         simulatorView.resetButton.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
+        
+        simulatorView.nodeCapacityStepper.addTarget(self, action: #selector(nodeCapacityStepperChanged), for: .valueChanged)
     }
     
     override func viewDidLayoutSubviews() {
@@ -35,7 +37,21 @@ class SimulatorViewController: UIViewController {
         
         let width = Double(view.frame.width)
         
-        quadTree = QuadTreeNode(bounds: QuadTreeBounds(minX: 0, minY: 0, maxX: width, maxY: width))
+        quadTree = QuadTreeNode(bounds: QuadTreeBounds(minX: 0, minY: 0, maxX: width, maxY: width),
+                                capacity: 1)
+    }
+    
+    @objc
+    func nodeCapacityStepperChanged(_ sender: UIStepper) {
+        simulatorView.nodeCapacityLabel.text = "Node Capacity: \(Int(sender.value))"
+        let width = Double(view.frame.width)
+        quadTree = QuadTreeNode(bounds: QuadTreeBounds(minX: 0, minY: 0, maxX: width, maxY: width),
+                                capacity: Int(sender.value))
+        simulatorView.quadTreeView.subviews.forEach {
+            $0.removeFromSuperview()
+        }
+        lineViews.removeAll()
+        
     }
     
     @objc

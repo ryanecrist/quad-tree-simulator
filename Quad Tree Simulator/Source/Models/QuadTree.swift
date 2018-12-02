@@ -41,13 +41,15 @@ class QuadTreeNode {
     
     private(set) var type = QuadTreeNodeType.leaf([])
     let bounds: QuadTreeBounds
+    let capacity: Int
     var points: Set<QuadTreePoint>? {
         guard case .leaf(let points) = type else { return nil }
         return points
     }
     
-    init(bounds: QuadTreeBounds) {
+    init(bounds: QuadTreeBounds, capacity: Int) {
         self.bounds = bounds
+        self.capacity = capacity
     }
     
     func add(_ point: QuadTreePoint) {
@@ -58,7 +60,7 @@ class QuadTreeNode {
             points.insert(point)
             type = .leaf(points)
             
-            if points.count > 1 { // todo
+            if points.count > capacity { // todo
                 
                 let min = bounds.min
                 let max = bounds.max
@@ -67,19 +69,23 @@ class QuadTreeNode {
                 let topLeftChild = QuadTreeNode(bounds: QuadTreeBounds(minX: min.x,
                                                                        minY: midpoint.y,
                                                                        maxX: midpoint.x,
-                                                                       maxY: max.y))
+                                                                       maxY: max.y),
+                                                capacity: capacity)
                 let topRightChild = QuadTreeNode(bounds: QuadTreeBounds(minX: midpoint.x,
                                                                         minY: midpoint.y,
                                                                         maxX: max.x,
-                                                                        maxY: max.y))
+                                                                        maxY: max.y),
+                                                 capacity: capacity)
                 let bottomLeftChild = QuadTreeNode(bounds: QuadTreeBounds(minX: min.x,
                                                                           minY: min.y,
                                                                           maxX: midpoint.x,
-                                                                          maxY: midpoint.y))
+                                                                          maxY: midpoint.y),
+                                                   capacity: capacity)
                 let bottomRightChild = QuadTreeNode(bounds: QuadTreeBounds(minX: midpoint.x,
                                                                            minY: min.y,
                                                                            maxX: max.x,
-                                                                           maxY: midpoint.y))
+                                                                           maxY: midpoint.y),
+                                                    capacity: capacity)
                 
                 type = .internal(topLeftChild, topRightChild, bottomLeftChild, bottomRightChild)
                 
@@ -140,7 +146,7 @@ class QuadTreeNode {
                 }
             }
             
-            if childPoints.count <= 1 {
+            if childPoints.count <= capacity {
                 type = .leaf(childPoints)
             }
         }
