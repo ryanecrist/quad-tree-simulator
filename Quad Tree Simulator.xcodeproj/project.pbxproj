@@ -8,24 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		943CF1A321B0FE2800C2ADF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CF1A221B0FE2800C2ADF5 /* AppDelegate.swift */; };
-		943CF1A521B0FE2800C2ADF5 /* SimulatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CF1A421B0FE2800C2ADF5 /* SimulatorViewController.swift */; };
+		943CF1A521B0FE2800C2ADF5 /* QuadTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CF1A421B0FE2800C2ADF5 /* QuadTreeViewController.swift */; };
 		943CF1AA21B0FE2800C2ADF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 943CF1A921B0FE2800C2ADF5 /* Assets.xcassets */; };
 		943CF1AD21B0FE2800C2ADF5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 943CF1AB21B0FE2800C2ADF5 /* LaunchScreen.storyboard */; };
 		943CF1B921B0FF0600C2ADF5 /* QuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CF1B821B0FF0600C2ADF5 /* QuadTree.swift */; };
-		943CF1BB21B1072100C2ADF5 /* PointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CF1BA21B1072100C2ADF5 /* PointView.swift */; };
-		943CF1BF21B456B500C2ADF5 /* SimulatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CF1BE21B456B500C2ADF5 /* SimulatorView.swift */; };
+		943CF1BB21B1072100C2ADF5 /* QuadTreePointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CF1BA21B1072100C2ADF5 /* QuadTreePointView.swift */; };
+		943CF1BF21B456B500C2ADF5 /* QuadTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943CF1BE21B456B500C2ADF5 /* QuadTreeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		943CF19F21B0FE2800C2ADF5 /* Quad Tree Simulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quad Tree Simulator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		943CF1A221B0FE2800C2ADF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		943CF1A421B0FE2800C2ADF5 /* SimulatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorViewController.swift; sourceTree = "<group>"; };
+		943CF1A421B0FE2800C2ADF5 /* QuadTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadTreeViewController.swift; sourceTree = "<group>"; };
 		943CF1A921B0FE2800C2ADF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		943CF1AC21B0FE2800C2ADF5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		943CF1AE21B0FE2800C2ADF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		943CF1B821B0FF0600C2ADF5 /* QuadTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadTree.swift; sourceTree = "<group>"; };
-		943CF1BA21B1072100C2ADF5 /* PointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointView.swift; sourceTree = "<group>"; };
-		943CF1BE21B456B500C2ADF5 /* SimulatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorView.swift; sourceTree = "<group>"; };
+		943CF1BA21B1072100C2ADF5 /* QuadTreePointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadTreePointView.swift; sourceTree = "<group>"; };
+		943CF1BE21B456B500C2ADF5 /* QuadTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadTreeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,9 +95,9 @@
 		943CF1B721B0FED100C2ADF5 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				943CF1BA21B1072100C2ADF5 /* PointView.swift */,
-				943CF1A421B0FE2800C2ADF5 /* SimulatorViewController.swift */,
-				943CF1BE21B456B500C2ADF5 /* SimulatorView.swift */,
+				943CF1BA21B1072100C2ADF5 /* QuadTreePointView.swift */,
+				943CF1A421B0FE2800C2ADF5 /* QuadTreeViewController.swift */,
+				943CF1BE21B456B500C2ADF5 /* QuadTreeView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -172,11 +172,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				943CF1BF21B456B500C2ADF5 /* SimulatorView.swift in Sources */,
+				943CF1BF21B456B500C2ADF5 /* QuadTreeView.swift in Sources */,
 				943CF1B921B0FF0600C2ADF5 /* QuadTree.swift in Sources */,
-				943CF1A521B0FE2800C2ADF5 /* SimulatorViewController.swift in Sources */,
+				943CF1A521B0FE2800C2ADF5 /* QuadTreeViewController.swift in Sources */,
 				943CF1A321B0FE2800C2ADF5 /* AppDelegate.swift in Sources */,
-				943CF1BB21B1072100C2ADF5 /* PointView.swift in Sources */,
+				943CF1BB21B1072100C2ADF5 /* QuadTreePointView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

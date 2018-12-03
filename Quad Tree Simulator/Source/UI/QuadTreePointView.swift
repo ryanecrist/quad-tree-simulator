@@ -1,5 +1,5 @@
 //
-//  PointView.swift
+//  QuadTreePointView.swift
 //  Quad Tree Simulator
 //
 //  Created by Ryan Crist on 11/30/18.
@@ -8,17 +8,13 @@
 
 import UIKit
 
-class PointView: UIView {
+class QuadTreePointView: UIView {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    convenience init(x: CGFloat, y: CGFloat) {
+        self.init(frame: CGRect(x: x - 4, y: y - 4, width: 8, height: 8))
         
         layer.borderColor = tintColor.cgColor
         layer.borderWidth = 1
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        return nil
     }
     
     override func layoutSubviews() {

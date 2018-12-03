@@ -8,27 +8,41 @@
 
 import Foundation
 
+/// A point (x, y) in the quad tree.
 struct QuadTreePoint: Equatable, Hashable {
     let x: Double
     let y: Double
 }
 
+/// The bounds of the quad tree (node).
 struct QuadTreeBounds {
+    
+    /// The minimum point.
     let min: QuadTreePoint
+    
+    /// The maximum point.
     let max: QuadTreePoint
+    
+    /// The midpoint.
     var midpoint: QuadTreePoint {
         return QuadTreePoint(x: (min.x + max.x) / 2, y: (min.y + max.y) / 2)
     }
+    
     init(minX: Double, minY: Double, maxX: Double, maxY: Double) {
         min = QuadTreePoint(x: minX, y: minY)
         max = QuadTreePoint(x: maxX, y: maxY)
     }
+    
     init(min: QuadTreePoint, max: QuadTreePoint) {
         self.min = min
         self.max = max
     }
 }
 
+/// The type of a quad tree node.
+///
+/// - leaf: Leaf node with a set points <= to the node capacity.
+/// - `internal`_: Internal node with four children.
 enum QuadTreeNodeType {
     case leaf(_ points: Set<QuadTreePoint>)
     case `internal`(_ topLeftChild: QuadTreeNode,
@@ -37,11 +51,19 @@ enum QuadTreeNodeType {
                     _ bottomRightChild: QuadTreeNode)
 }
 
+/// A quad tree (node).  Each point represented by the quad tree must be unique.
 class QuadTreeNode {
     
+    /// The type of the quad tree (node).
     private(set) var type = QuadTreeNodeType.leaf([])
+    
+    /// The bounds of the quad tree (node).
     let bounds: QuadTreeBounds
+    
+    /// The node capacity of the quad tree (node).
     let capacity: Int
+    
+    /// All points of the quad tree (node), determined by recursing over any children nodes.
     var points: Set<QuadTreePoint> {
         
         switch type {
@@ -66,6 +88,9 @@ class QuadTreeNode {
         self.capacity = capacity
     }
     
+    /// Adds a point to the quad tree (node).
+    ///
+    /// - Parameter point: The point to add.
     func add(_ point: QuadTreePoint) {
         
         switch type {
@@ -74,6 +99,7 @@ class QuadTreeNode {
             points.insert(point)
             type = .leaf(points)
             
+            // Subdivide the quad tree node if the points count has exceeded the capacity.
             if points.count > capacity {
                 
                 let min = bounds.min
@@ -128,6 +154,9 @@ class QuadTreeNode {
         }
     }
     
+    /// Removes a point from the quad tree (node).
+    ///
+    /// - Parameter point: The point to remove.
     func remove(_ point: QuadTreePoint) {
         
         switch type {
@@ -154,12 +183,15 @@ class QuadTreeNode {
                 }
             }
             
+            // Merge the quad tree children nodes into a single leaf node if the total number of
+            // points of the children is less than or equal to the capacity.
             if points.count <= capacity {
                 type = .leaf(points)
             }
         }
     }
     
+    /// Removes all points from the quad tree.
     func removeAll() {
         
         if case let .internal(topLeftChild, topRightChild, bottomLeftChild, bottomRightChild) = type {

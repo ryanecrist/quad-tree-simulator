@@ -1,5 +1,5 @@
 //
-//  SimulatorView.swift
+//  QuadTreeView.swift
 //  Quad Tree Simulator
 //
 //  Created by Ryan Crist on 12/2/18.
@@ -8,41 +8,14 @@
 
 import UIKit
 
-class SimulatorView: UIView {
+class QuadTreeView: UIView {
     
-    private(set) lazy var quadTreeView: UIView = {
+    lazy var boxView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.borderColor = tintColor.cgColor
         view.layer.borderWidth = 1
         return view
-    }()
-    
-    let removeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Remove Last Point", for: .normal)
-        button.titleLabel?.textAlignment = .center
-        return button
-    }()
-    
-    let clearButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Clear Quad Tree", for: .normal)
-        button.titleLabel?.textAlignment = .center
-        return button
-    }()
-    
-    let nodeCapacityStepper: UIStepper = {
-        let stepper = UIStepper()
-        stepper.minimumValue = 1
-        stepper.maximumValue = 10
-        return stepper
-    }()
-    
-    let nodeCapacityLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Node Capacity: 1"
-        return label
     }()
     
     let instructionsLabel: UILabel = {
@@ -55,17 +28,50 @@ class SimulatorView: UIView {
         return label
     }()
     
+    let nodeCapacityLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Node Capacity: 1"
+        return label
+    }()
+    
+    let nodeCapacityStepper: UIStepper = {
+        let stepper = UIStepper()
+        stepper.minimumValue = 1
+        stepper.maximumValue = 10
+        return stepper
+    }()
+    
+    let removeButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Remove Last Point", for: .normal)
+        button.titleLabel?.textAlignment = .center
+        return button
+    }()
+    
+    let clearButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Clear", for: .normal)
+        button.titleLabel?.textAlignment = .center
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .white
+        
+        let titleLabel = UILabel()
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        titleLabel.text = "Quad Tree Simulator"
+        titleLabel.textAlignment = .center
 
         let nodeCapacityStackView = UIStackView(arrangedSubviews: [nodeCapacityLabel,
                                                                    nodeCapacityStepper])
         
         let controlsStackView = UIStackView(arrangedSubviews: [removeButton, clearButton])
         
-        let contentStackView = UIStackView(arrangedSubviews: [quadTreeView,
+        let contentStackView = UIStackView(arrangedSubviews: [titleLabel,
+                                                              boxView,
                                                               nodeCapacityStackView,
                                                               controlsStackView])
         contentStackView.axis = .vertical
@@ -83,15 +89,15 @@ class SimulatorView: UIView {
             contentStackView.leftAnchor.constraint(equalTo: leftAnchor),
             contentStackView.rightAnchor.constraint(equalTo: rightAnchor),
             
-            quadTreeView.heightAnchor.constraint(equalTo: quadTreeView.widthAnchor),
+            boxView.heightAnchor.constraint(equalTo: boxView.widthAnchor),
             
             clearButton.widthAnchor.constraint(equalTo: removeButton.widthAnchor),
             
-            instructionsLabel.leftAnchor.constraint(equalTo: quadTreeView.leftAnchor,
+            instructionsLabel.leftAnchor.constraint(equalTo: boxView.leftAnchor,
                                                     constant: 16),
-            instructionsLabel.rightAnchor.constraint(equalTo: quadTreeView.rightAnchor,
+            instructionsLabel.rightAnchor.constraint(equalTo: boxView.rightAnchor,
                                                      constant: -16),
-            instructionsLabel.centerYAnchor.constraint(equalTo: quadTreeView.centerYAnchor),
+            instructionsLabel.centerYAnchor.constraint(equalTo: boxView.centerYAnchor),
         ])
     }
     
