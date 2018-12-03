@@ -42,9 +42,23 @@ class QuadTreeNode {
     private(set) var type = QuadTreeNodeType.leaf([])
     let bounds: QuadTreeBounds
     let capacity: Int
-    var points: Set<QuadTreePoint>? {
-        guard case .leaf(let points) = type else { return nil }
-        return points
+    var points: Set<QuadTreePoint> {
+        
+        switch type {
+        case let .leaf(points):
+            
+            return points
+            
+        case let .internal(topLeftChild, topRightChild, bottomLeftChild, bottomRightChild):
+            
+            var points = Set<QuadTreePoint>()
+            
+            [topLeftChild, topRightChild, bottomLeftChild, bottomRightChild].forEach {
+                points = points.union($0.points)
+            }
+            
+            return points
+        }
     }
     
     init(bounds: QuadTreeBounds, capacity: Int) {
@@ -60,7 +74,7 @@ class QuadTreeNode {
             points.insert(point)
             type = .leaf(points)
             
-            if points.count > capacity { // todo
+            if points.count > capacity {
                 
                 let min = bounds.min
                 let max = bounds.max
@@ -118,8 +132,10 @@ class QuadTreeNode {
         
         switch type {
         case var .leaf(points):
+            
             points.remove(point)
             type = .leaf(points)
+            
         case let .internal(topLeftChild, topRightChild, bottomLeftChild, bottomRightChild):
             
             let midpoint = bounds.midpoint
@@ -138,16 +154,8 @@ class QuadTreeNode {
                 }
             }
             
-            var childPoints = Set<QuadTreePoint>()
-            
-            [topLeftChild, topRightChild, bottomLeftChild, bottomRightChild].forEach {
-                if case let .leaf(points) = $0.type {
-                    childPoints = childPoints.union(points)
-                }
-            }
-            
-            if childPoints.count <= capacity {
-                type = .leaf(childPoints)
+            if points.count <= capacity {
+                type = .leaf(points)
             }
         }
     }

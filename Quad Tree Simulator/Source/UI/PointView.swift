@@ -13,7 +13,7 @@ class PointView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.borderColor = UIColor.blue.cgColor
+        layer.borderColor = tintColor.cgColor
         layer.borderWidth = 1
     }
     

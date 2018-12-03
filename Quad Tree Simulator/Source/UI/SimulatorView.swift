@@ -10,18 +10,25 @@ import UIKit
 
 class SimulatorView: UIView {
     
-    let quadTreeView: UIView = {
+    private(set) lazy var quadTreeView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderColor = tintColor.cgColor
+        view.layer.borderWidth = 1
         return view
     }()
     
-    let resetButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Reset", for: .normal)
-        button.setTitleColor(.red, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
+    let removeButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Remove Last Point", for: .normal)
+        button.titleLabel?.textAlignment = .center
+        return button
+    }()
+    
+    let clearButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Clear Quad Tree", for: .normal)
+        button.titleLabel?.textAlignment = .center
         return button
     }()
     
@@ -29,7 +36,6 @@ class SimulatorView: UIView {
         let stepper = UIStepper()
         stepper.minimumValue = 1
         stepper.maximumValue = 10
-        stepper.tintColor = .black
         return stepper
     }()
     
@@ -42,30 +48,30 @@ class SimulatorView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .lightGray
+        backgroundColor = .white
 
         let nodeCapacityStackView = UIStackView(arrangedSubviews: [nodeCapacityLabel, nodeCapacityStepper])
-        nodeCapacityStackView.isLayoutMarginsRelativeArrangement = true
-        nodeCapacityStackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        nodeCapacityStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(quadTreeView)
-        addSubview(resetButton)
-        addSubview(nodeCapacityStackView)
+        let controlsStackView = UIStackView(arrangedSubviews: [removeButton, clearButton])
+        
+        let contentStackView = UIStackView(arrangedSubviews: [quadTreeView, nodeCapacityStackView, controlsStackView])
+        contentStackView.axis = .vertical
+        contentStackView.isLayoutMarginsRelativeArrangement = true
+        contentStackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        contentStackView.spacing = 16
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(contentStackView)
         
         NSLayoutConstraint.activate([
             
-            quadTreeView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            quadTreeView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            quadTreeView.widthAnchor.constraint(equalTo: widthAnchor),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor),
+            contentStackView.leftAnchor.constraint(equalTo: leftAnchor),
+            contentStackView.rightAnchor.constraint(equalTo: rightAnchor),
+            
             quadTreeView.heightAnchor.constraint(equalTo: quadTreeView.widthAnchor),
             
-            resetButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            resetButton.topAnchor.constraint(equalTo: quadTreeView.bottomAnchor, constant: 16),
-            
-            nodeCapacityStackView.leftAnchor.constraint(equalTo: leftAnchor),
-            nodeCapacityStackView.rightAnchor.constraint(equalTo: rightAnchor),
-            nodeCapacityStackView.bottomAnchor.constraint(equalTo: quadTreeView.topAnchor),
+            clearButton.widthAnchor.constraint(equalTo: removeButton.widthAnchor),
         ])
     }
     

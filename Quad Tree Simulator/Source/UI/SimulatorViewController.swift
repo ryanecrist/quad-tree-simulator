@@ -12,7 +12,12 @@ class SimulatorViewController: UIViewController {
     
     lazy var simulatorView = SimulatorView()
     
+    var lineViews = [UIView]()
+    
     var quadTree: QuadTreeNode!
+    
+    var points: [QuadTreePoint] = []
+    var pointViews: [QuadTreePoint:PointView] = [:]
     
     override func loadView() {
         view = simulatorView
@@ -25,7 +30,8 @@ class SimulatorViewController: UIViewController {
                                                           action: #selector(tapGestureRecognized))
         simulatorView.quadTreeView.addGestureRecognizer(tapGestureRecognizer)
         
-        simulatorView.resetButton.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
+        simulatorView.removeButton.addTarget(self, action: #selector(removeLastPoint), for: .touchUpInside)
+        simulatorView.clearButton.addTarget(self, action: #selector(clearQuadTree), for: .touchUpInside)
         
         simulatorView.nodeCapacityStepper.addTarget(self, action: #selector(nodeCapacityStepperChanged), for: .valueChanged)
     }
@@ -33,9 +39,9 @@ class SimulatorViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        guard quadTree == nil, view.frame != .zero else { return }
+        guard quadTree == nil, simulatorView.quadTreeView.frame != .zero else { return }
         
-        let width = Double(view.frame.width)
+        let width = Double(simulatorView.quadTreeView.frame.width)
         
         quadTree = QuadTreeNode(bounds: QuadTreeBounds(minX: 0, minY: 0, maxX: width, maxY: width),
                                 capacity: 1)
@@ -43,10 +49,15 @@ class SimulatorViewController: UIViewController {
     
     @objc
     func nodeCapacityStepperChanged(_ sender: UIStepper) {
+        
         simulatorView.nodeCapacityLabel.text = "Node Capacity: \(Int(sender.value))"
-        let width = Double(view.frame.width)
+        
+        let width = Double(simulatorView.quadTreeView.frame.width)
+        
         quadTree = QuadTreeNode(bounds: QuadTreeBounds(minX: 0, minY: 0, maxX: width, maxY: width),
                                 capacity: Int(sender.value))
+        
+        
         simulatorView.quadTreeView.subviews.forEach {
             $0.removeFromSuperview()
         }
@@ -55,7 +66,22 @@ class SimulatorViewController: UIViewController {
     }
     
     @objc
-    func resetButtonTapped(_ sender: UIButton) {
+    func removeLastPoint(_ sender: UIButton) {
+        
+        guard !points.isEmpty else { return }
+        
+        let point = points.removeLast()
+        
+        quadTree.remove(point)
+        
+        pointViews[point]?.removeFromSuperview()
+        pointViews[point] = nil
+        
+        drawQuadTree()
+    }
+    
+    @objc
+    func clearQuadTree(_ sender: UIButton) {
         
         simulatorView.quadTreeView.subviews.forEach {
             $0.removeFromSuperview()
@@ -72,8 +98,19 @@ class SimulatorViewController: UIViewController {
         // TODO flip y axis
         let pointView = PointView(frame: CGRect(x: point.x - 5, y: point.y - 5, width: 10, height: 10))
         simulatorView.quadTreeView.addSubview(pointView)
-        quadTree.add(QuadTreePoint(x: Double(point.x), y: Double(point.y)))
+    
+        
+        let qPoint = QuadTreePoint(x: Double(point.x), y: Double(point.y))
+        pointViews[qPoint] = pointView
+        
+        points.append(qPoint)
+        quadTree.add(qPoint)
      
+        drawQuadTree()
+    }
+    
+    func drawQuadTree() {
+        
         lineViews.forEach {
             $0.removeFromSuperview()
         }
@@ -82,9 +119,8 @@ class SimulatorViewController: UIViewController {
         drawQuadTree(quadTree)
     }
     
-    var lineViews = [UIView]()
-    
     func drawQuadTree(_ quadTree: QuadTreeNode) {
+        
         if case let .internal(topLeftChild, topRightChild, bottomLeftChild, bottomRightChild) = quadTree.type {
             
             let min = quadTree.bounds.min
@@ -92,10 +128,10 @@ class SimulatorViewController: UIViewController {
             let midpoint = quadTree.bounds.midpoint
             
             let horizontalLineView = UIView(frame: CGRect(x: min.x, y: midpoint.y, width: (max.x - min.x), height: 1))
-            horizontalLineView.backgroundColor = .blue
+            horizontalLineView.backgroundColor = view.tintColor
             
             let verticalLineView = UIView(frame: CGRect(x: midpoint.x, y: min.y, width: 1, height: (max.y - min.y)))
-            verticalLineView.backgroundColor = .blue
+            verticalLineView.backgroundColor = view.tintColor
             
             simulatorView.quadTreeView.addSubview(horizontalLineView)
             simulatorView.quadTreeView.addSubview(verticalLineView)
