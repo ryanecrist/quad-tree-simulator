@@ -93,6 +93,7 @@ class QuadTreeViewController: UIViewController {
     /// - Parameter sender: The "Clear" button.
     @objc
     func clear(_ sender: UIButton) {
+        historicalPoints.removeAll()
         quadTree.removeAll()
         redrawQuadTree()
     }
