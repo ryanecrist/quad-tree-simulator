@@ -17,7 +17,11 @@ class SimulatorViewController: UIViewController {
     var quadTree: QuadTreeNode!
     
     var points: [QuadTreePoint] = []
-    var pointViews: [QuadTreePoint:PointView] = [:]
+    var pointViews: [QuadTreePoint:PointView] = [:] {
+        didSet {
+            simulatorView.instructionsLabel.isHidden = !pointViews.isEmpty
+        }
+    }
     
     override func loadView() {
         view = simulatorView

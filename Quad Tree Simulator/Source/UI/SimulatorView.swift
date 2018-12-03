@@ -45,16 +45,29 @@ class SimulatorView: UIView {
         return label
     }()
     
+    let instructionsLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.text = "Tap anywhere in the box to create a point."
+        label.textAlignment = .center
+        label.textColor = .lightGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .white
 
-        let nodeCapacityStackView = UIStackView(arrangedSubviews: [nodeCapacityLabel, nodeCapacityStepper])
+        let nodeCapacityStackView = UIStackView(arrangedSubviews: [nodeCapacityLabel,
+                                                                   nodeCapacityStepper])
         
         let controlsStackView = UIStackView(arrangedSubviews: [removeButton, clearButton])
         
-        let contentStackView = UIStackView(arrangedSubviews: [quadTreeView, nodeCapacityStackView, controlsStackView])
+        let contentStackView = UIStackView(arrangedSubviews: [quadTreeView,
+                                                              nodeCapacityStackView,
+                                                              controlsStackView])
         contentStackView.axis = .vertical
         contentStackView.isLayoutMarginsRelativeArrangement = true
         contentStackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -62,6 +75,7 @@ class SimulatorView: UIView {
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(contentStackView)
+        addSubview(instructionsLabel)
         
         NSLayoutConstraint.activate([
             
@@ -72,6 +86,12 @@ class SimulatorView: UIView {
             quadTreeView.heightAnchor.constraint(equalTo: quadTreeView.widthAnchor),
             
             clearButton.widthAnchor.constraint(equalTo: removeButton.widthAnchor),
+            
+            instructionsLabel.leftAnchor.constraint(equalTo: quadTreeView.leftAnchor,
+                                                    constant: 16),
+            instructionsLabel.rightAnchor.constraint(equalTo: quadTreeView.rightAnchor,
+                                                     constant: -16),
+            instructionsLabel.centerYAnchor.constraint(equalTo: quadTreeView.centerYAnchor),
         ])
     }
     
